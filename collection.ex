@@ -32,3 +32,28 @@ IO.inspect(sample);           # expected: { :ok, "Hello", :world }
 # 아마 call by value로 인해 새로 할당해줄 수 밖에 없는 것 같기도 하다. -> 사실은 모든 것들이 불변으로 지켜지기 때문이라고 한다..
 sample = Tuple.insert_at(sample, 0, :foo);
 IO.inspect(sample);           # expected : { :foo, :ok, "Hello", :world }
+
+
+# Key.
+# Key 와 value 가 서로 동일하다면 논리적으로 동일한 것으로 취급한다.
+list_1 = [{:a, 1}, {:b, 2}];
+list_2 = [a: 1, b: 2];
+IO.puts(list_1 === list_2);
+
+list = [a: 1, b: 2];
+IO.puts(list[:a]);    # expected: 1
+
+# Key 는 원자성을 가지고 있어야하며, 유일하고, 정렬되어있을 것을 권장한다.
+list = [a: 1, a: 2, b: 3]
+IO.inspect(Keyword.get(list, :a));          # expect 1
+IO.inspect(Keyword.get_values(list, :a));   # expect [1, 2]
+
+# put_new 는 키가 아예 유일해야지만 입력되고, replace 는 되지 않는다.
+list_new = Keyword.put_new(list, :c, 5);
+IO.puts(Keyword.get(list_new, :c));         # expect: 5
+
+list_new = Keyword.delete_first(list_new, :a);
+IO.inspect(Keyword.get_values(list_new, :a));         # expect: [2]
+
+list_new = Keyword.delete(list_new, :b);
+IO.puts(Keyword.get(list_new, :b));                   # expect:
