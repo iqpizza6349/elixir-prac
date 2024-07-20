@@ -9,4 +9,5 @@ defmodule Loop do
   end
 end
 
+# Elixir 는 전통적인 의미의 loop 가 없고, enum, 재귀, stream 을 사용한 loop 만 존재한다.
 Loop.print_multi_times("Hello, World", 10);
